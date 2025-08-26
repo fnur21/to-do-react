@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import '../App.css';
 
-function TodoCreate() {
-  const [todoText, setTodoText] = useState('');
+function TodoCreate({ onCreateTodo }) {
 
-  const handleAdd = () => {
-    if(todoText.trim() !== '') {
-      alert(`Yeni Todo: ${todoText}`);
-      setTodoText('');
+    const [newTodo, setNewTodo] = useState('');
+
+    const clearInput = () => {
+        setNewTodo('');
     }
-  };
 
-  return (
-    <div className='todo-create'>
-      <input 
-        className='todo-input' 
-        type="text" 
-        placeholder='Todo giriniz' 
-        value={todoText}
-        onChange={(e) => setTodoText(e.target.value)}
-      />
-      <button className='todo-button' onClick={handleAdd}>Todo Oluştur</button>
-    </div>
-  );
+    const createTodo = () => {
+        if (!newTodo) return;
+
+        const request = {
+            id: Math.floor(Math.random() * 99999999999),
+            content: newTodo
+        }
+        onCreateTodo(request)
+        clearInput();
+    }
+    return (
+        <div className='todo-create'>
+            <input
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                className='todo-input' type="text" placeholder='Todo giriniz' />
+            <button onClick={createTodo} className='todo-button'>Todo Oluştur</button>
+        </div>
+    )
 }
 
-export default TodoCreate;
+export default TodoCreate
